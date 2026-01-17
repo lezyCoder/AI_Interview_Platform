@@ -9,7 +9,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 const Sidebar = () => {
   const [isOpen, setOpen] = useState(true);
 
-  const MenuItem = ({ icon: Icon, label }) => {
+  const MenuItem = ({ icon:Icon, label }) => {
     return (
       <button
         className={`flex text-center items-center gap-4  w-full font-thin text-xl py-2 hover:bg-gray-500 rounded`}>
