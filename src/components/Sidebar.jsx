@@ -20,7 +20,7 @@ const Sidebar = () => {
   return (
 
     <aside >
-      <div className={`${isOpen ? "lg:w-48" : "lg:w-14 "} md:w-36 flex flex-col items-center justify-between bg-base-500 h-screen p-4 gap-2 border border-gray-700`} onClick={() => setOpen(!isOpen)}>
+      <div className={`${isOpen ? "lg:w-48" : "lg:w-14 "} md:w-36 flex flex-col items-center justify-between bg-base-500 h-full p-4 gap-2 border border-gray-700`} onClick={() => setOpen(!isOpen)}>
         <div className="navigation flex justify-between items-center w-full" >
           <h1>AI</h1>
           <button className={`${isOpen ? "block" : "hidden"}`} onClick={() => setOpen(!isOpen)} >
@@ -37,12 +37,12 @@ const Sidebar = () => {
 
           {isOpen && (
             <>
-              <div className="flex justify-between items-center text-gray-500 text-sm py-2">
+              <div className="flex justify-between items-center text-gray-500 text-sm py-2" onClick={(e) => { e.stopPropagation() }}>
                 <p>Projects</p>
                 <RiArrowDropDownLine className="text-xl" />
               </div>
 
-              <div className="flex justify-between items-center text-gray-500 text-sm py-2">
+              <div className="flex justify-between items-center text-gray-500 text-sm py-2" onClick={(e) => { e.stopPropagation() }}>
                 <p>Chats</p>
                 <RiArrowDropDownLine className="text-xl" />
               </div>
