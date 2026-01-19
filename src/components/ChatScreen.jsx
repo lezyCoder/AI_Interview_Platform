@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
 import { nanoid } from "nanoid";
-
 const ChatScreen = () => {
     const [userResponse, setuserResponse] = useState("");
 
@@ -10,10 +9,12 @@ const ChatScreen = () => {
     const handleSendUserResponse = (e) => {
         e.preventDefault();
 
-        setMessages(prev => [...prev, { text: userResponse, user: "human", id:nanoid }])
+        setMessages(prev => [...prev, { text: userResponse, user: "human", id: nanoid() }])
         // Reset
         setuserResponse("");
     };
+
+    console.log("messages", messages)
 
     return (
         <div className="flex flex-col flex-1 ">
@@ -52,7 +53,7 @@ const ChatScreen = () => {
                             className="flex-1 resize-none outline-none border rounded-full px-4 py-2 overflow-hidden"
                             rows={1}
                             placeholder="Ask Anything"
-                            value={setuserResponse}
+                            value={userResponse}
                             onChange={(e) => setuserResponse(e.target.value)}
                         />
                         <button className="px-4 py-2 border rounded-full">Send</button>
