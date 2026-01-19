@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { nanoid } from "nanoid";
+import { aiResponse } from "./utility/AI";
+
 const ChatScreen = () => {
     const [userResponse, setuserResponse] = useState("");
 
     const [messages, setMessages] = useState([]);
 
-    const handleSendUserResponse = (e) => {
+    const handleSendUserResponse = async (e) => {
         e.preventDefault();
 
-        setMessages(prev => [...prev, { text: userResponse, user: "human", id: nanoid() }])
+        if (userResponse.trim()) {
+            setMessages(prev => [...prev, { text: userResponse, user: "human", id: nanoid() }])
+        }
+        else {
+            alert("Type something")
+        }
         // Reset
         setuserResponse("");
+        //    ================= AI Response ==================
+        const AiResponseText = await aiResponse(userResponse)
+        console.log("response", AiResponseText)
+        setMessages(prev => [...prev, { text: AiResponseText, user: "ai", id: nanoid() }])
     };
 
-    console.log("messages", messages)
 
     return (
         <div className="flex flex-col flex-1 ">
@@ -25,18 +35,14 @@ const ChatScreen = () => {
                 <div className="chat-screen bg-gray-800 min-h-full w-full p-2">
                     <div className="chat-container p-2">
                         <div className="chat-bubbles flex flex-col gap-y-4">
-                            <div className="ai flex justify-start w-full border border-gray-700 rounded   ">
-                                <p className="p-2">Hello</p>
-                            </div>
-                            <div className="user flex justify-end border border-gray-700 rounded   ">
-                                <p className="p-2 ">Hello</p>{" "}
-                            </div>
-                            <div className="ai flex justify-start w-full">
-                                <p className="p-2 w-fit  rounded  ">How are you ?</p>
-                            </div>
-                            <div className="user flex justify-end w-full">
-                                <p>I am good </p>
-                            </div>
+
+                            {
+                                messages && messages.map((message) => (
+                                    <div key={message.id} className={`flex  w-full ${message.user === "human" ? "justify-end" : "justify-start"} `}>
+                                        <p className="p-2 rounded border border-gray-700">{message.text}</p>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>
