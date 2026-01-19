@@ -17,6 +17,28 @@ const ChatScreen = () => {
             return
         } setMessages(prev => [...prev, { text: userResponse, user: "human", id: nanoid() }])
 
+        // ============= Training the AI for specific role ================
+        const request = {
+            messages: [
+                {
+                    role: "system",
+                    content: `You are a supportive Frontend Interviewer.
+                You only ask frontend questions.
+                You must give feedback after every answer.
+                You must decide when the interview ends and give final evaluation.
+                You must never answer unrelated questions.`
+                },
+                {
+                    role: "user",
+                    content: `Session: Role=Frontend, Level=Intermediate`
+                },
+                {
+                    role: "user",
+                    content: userResponse
+                }
+            ]
+        }
+
 
         // Reset
         setuserResponse("");
@@ -24,7 +46,7 @@ const ChatScreen = () => {
         //    ================= AI Response ==================
         try {
             //================= Conversion to string because we are using Markdown and its render only String ================
-            const AiResponseText = String(await aiResponse(userResponse));
+            const AiResponseText = String(await aiResponse(request));
 
 
             setMessages(prev => [
@@ -92,7 +114,10 @@ const ChatScreen = () => {
                 <div className="flex justify-center">
                     <form
                         className="flex items-center gap-2 w-full max-w-2xl"
-                        onSubmit={(e) => handleSendUserResponse(e)}>
+                        onSubmit={(e) => handleSendUserResponse(e)} onKeyDown={(e) => {
+                            if (e.key === "Enter")
+                                handleSendUserResponse(e);
+                        }}>
                         <textarea
                             className="flex-1 resize-none outline-none border rounded-full px-4 py-2 overflow-hidden"
                             rows={1}
