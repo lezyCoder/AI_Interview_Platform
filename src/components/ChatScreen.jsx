@@ -41,12 +41,13 @@ const ChatScreen = () => {
 
 
     return (
+
         <div className="flex flex-col flex-1 ">
             <Navbar />
 
             {/* Chat area */}
-            <div className="flex-1 overflow-y-auto  ">
-                <div className="chat-screen bg-gray-800 min-h-full w-full p-2">
+            <div className="flex-1 overflow-y-auto ">
+                <div className="chat-screen bg-zinc-900 min-h-full w-full p-2">
                     <div className="chat-container p-2">
                         <div className="chat-bubbles flex flex-col gap-y-4">
 
@@ -86,7 +87,7 @@ const ChatScreen = () => {
 
             {/* Input bar */}
 
-            <div className="bg-base-500 p-2">
+            <div className="p-4 bg-zinc-900">
                 <div className="flex justify-center">
                     <form
                         className="flex items-center gap-2 w-full max-w-2xl"
@@ -106,6 +107,7 @@ const ChatScreen = () => {
                 </div>
             </div>
         </div >
+
     );
 };
 
