@@ -17,45 +17,19 @@ const ChatScreen = () => {
             return
         } setMessages(prev => [...prev, { text: userResponse, user: "human", id: nanoid() }])
 
-        // ============= Training the AI for specific role ================
-        const request = {
-            messages: [
-                {
-                    role: "system",
-                    content: `You are a supportive Frontend Interviewer.
-                You only ask frontend questions.
-                You must give feedback after every answer.
-                You must decide when the interview ends and give final evaluation.
-                You must never answer unrelated questions.`
-                },
-                { role: "user", content: "Start the interview by introducing yourself and explaining the rules." },
-                {
-                    role: "user",
-                    content: `Session: Role=Frontend, Level=Intermediate`
-                },
-                {
-                    role: "user",
-                    content: userResponse
-                }
-            ]
-        }
-
-
         // Reset
         setuserResponse("");
         setLoading(true);
         //    ================= AI Response ==================
         try {
             //================= Conversion to string because we are using Markdown and its render only String ================
-            const AiResponseText = String(await aiResponse(request));
-
-
+            const AiResponseText = String(await aiResponse(userResponse));
             setMessages(prev => [
                 ...prev,
                 { text: AiResponseText, user: "ai", id: nanoid() }
             ]);
         } catch (error) {
-         
+
             setMessages(prev => [
                 ...prev,
                 { text: "Something went wrong 😢", user: "ai", id: nanoid() }
