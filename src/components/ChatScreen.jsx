@@ -28,6 +28,7 @@ const ChatScreen = () => {
                 You must decide when the interview ends and give final evaluation.
                 You must never answer unrelated questions.`
                 },
+                { role: "user", content: "Start the interview by introducing yourself and explaining the rules." },
                 {
                     role: "user",
                     content: `Session: Role=Frontend, Level=Intermediate`
@@ -54,6 +55,7 @@ const ChatScreen = () => {
                 { text: AiResponseText, user: "ai", id: nanoid() }
             ]);
         } catch (error) {
+         
             setMessages(prev => [
                 ...prev,
                 { text: "Something went wrong 😢", user: "ai", id: nanoid() }
