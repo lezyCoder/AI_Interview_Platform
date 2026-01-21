@@ -1,22 +1,39 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const titleRef = useRef();
+  const [title, setTitle] = useState(() => {
+    const savedTitle = localStorage.getItem("title")
+    return savedTitle ? JSON.parse(savedTitle) : "title"
+  });
+
+  const [submitted, setSubmitted] = useState(() => {
+    return Boolean(localStorage.getItem("title"))
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(titleRef.current.value);
-    titleRef.current.value = "";
+    if (!title.trim()) return;
+    setSubmitted(true);
   };
+
+  useEffect(() => {
+    localStorage.setItem("title", JSON.stringify(title));
+  }, [title]);
+
   return (
     <nav className="w-full bg-zinc-900 text-center p-4 border-b-2 border-gray-700">
-      <form action="" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Chat title"
-          className="border border-gray-700 text-center outline-none"
-          ref={titleRef}
-        />
+      <form onSubmit={handleSubmit}>
+        {submitted ? (
+          <p>{title}</p>
+        ) : (
+          <input
+            type="text"
+            placeholder="Chat title"
+            className="border border-gray-700 text-center outline-none"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        )}
       </form>
     </nav>
   );
