@@ -9,10 +9,40 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 const Sidebar = () => {
   const [isOpen, setOpen] = useState(false);
 
+  // ============ all chats are here ============
+  const [allChats, setChats] = useState([
+    { id: "a13232211", title: "title1" },
+    {
+      id: "2232219dn",
+      title: "title2",
+    },
+  ]);
+  const [showChats, setShowChats] = useState(true);
+  //================ Creating a new chat ====================
+
+  const handleCreateNewChat = (chatTitle) => {
+    setChats((prev) => [{ id: nanoid(), title: chatTitle }, ...prev]);
+  };
+
+  // ============== Handling crud Operations here ============
+  const handleOperations = (e, label) => {
+    e.stopPropagation();
+    if (label === "New chat") {
+      handleCreateNewChat((title = "chattitle"));
+    }
+    if (label === "Search") {
+      return;
+    }
+    if (label === "Projects") return;
+  };
+
   const MenuItem = ({ icon: Icon, label }) => {
     return (
       <button
-        className={`flex text-center items-center gap-4  w-full font-thin text-xl py-2 hover:bg-gray-800 rounded`}>
+        className={`flex text-center items-center gap-4  w-full font-thin text-xl py-2 hover:bg-gray-800 rounded`}
+        onClick={(e) => {
+          handleOperations(e, label);
+        }}>
         <Icon icon={RiChatNewLine} className="text-2xl" />
         {isOpen && <span>{label}</span>}
       </button>
@@ -34,7 +64,7 @@ const Sidebar = () => {
 
         <div className="container h-96 flex flex-col ">
           <div className="operations-container ">
-            <MenuItem icon={RiChatNewLine} label="NewChat" />
+            <MenuItem icon={RiChatNewLine} label="New chat" />
             <MenuItem icon={IoSearch} label="Search" />
             <MenuItem icon={VscNewFolder} label="Projects" />
           </div>
@@ -51,12 +81,24 @@ const Sidebar = () => {
               </div>
 
               <div
-                className="flex justify-between items-center text-gray-500 text-sm py-2"
+                className="flex flex-col  gap-4 text-gray-500 text-sm py-2"
                 onClick={(e) => {
-                  e.stopPropagation();
+                  (e.stopPropagation(), setShowChats(!showChats));
                 }}>
-                <p>Chats</p>
-                <RiArrowDropDownLine className="text-xl" />
+                <div className="chat-heading flex justify-between items-center ">
+                  <h1>Chats</h1>
+                  <RiArrowDropDownLine className="text-xl" />
+                </div>
+                <div className="chats-list flex flex-col gap-2 bg-base-400">
+                  {showChats &&
+                    allChats.map((chat, id) => {
+                      return (
+                        <p key={id} className=" border-b-2 border-gray-700 py-2 overflow-x-hidden">
+                          {chat.title}
+                        </p>
+                      );
+                    })}
+                </div>
               </div>
             </>
           )}
