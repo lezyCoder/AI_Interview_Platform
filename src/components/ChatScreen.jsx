@@ -7,8 +7,17 @@ import Markdown from 'react-markdown'
 const ChatScreen = () => {
     const [userResponse, setuserResponse] = useState("");
     const [isLoading, setLoading] = useState(false)
-    const [messages, setMessages] = useState([]);
-
+    // ============= Stores all current message ==============
+    const [messages, setMessages] = useState(
+        () => {
+            const saved = localStorage.getItem("currentChat")
+            return saved ? JSON.parse(saved) : []
+        }
+    );
+    useEffect(() => {
+        localStorage.setItem("currentChat", JSON.stringify(messages))
+    }, [messages])
+    
     const handleSendUserResponse = async (e) => {
         e.preventDefault();
 
