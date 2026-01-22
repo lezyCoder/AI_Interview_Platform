@@ -11,9 +11,9 @@ import { ChatContext } from '../Context/ChatContext.jsx'
 const Sidebar = () => {
   const [isSideBarOpen, setOpen] = useState(false);
   const [showChats, setShowChats] = useState(true);
-
+  const [openMenuId, setOpenMenuId] = useState(null);
   // Get from context
-  const { allConversations, currentChatId, createNewChat, switchChat } = useContext(ChatContext);
+  const { allConversations, currentChatId, createNewChat, switchChat, deleteChat } = useContext(ChatContext);
 
   const handleOperations = (e, label) => {
     e.stopPropagation();
@@ -61,12 +61,12 @@ const Sidebar = () => {
 
           {isSideBarOpen && (
             <>
-              <div
+              {/* <div
                 className="flex justify-between items-center text-gray-500 text-sm py-2"
                 onClick={(e) => e.stopPropagation()}>
                 <p>Projects</p>
                 <RiArrowDropDownLine className="text-xl" />
-              </div>
+              </div> */}
 
               <div
                 className="flex flex-col gap-4 text-gray-500 text-sm py-2 w-full"
@@ -79,34 +79,62 @@ const Sidebar = () => {
                   <RiArrowDropDownLine className="text-xl" />
                 </div>
 
-                <div className="chats-list flex flex-col gap-2 bg-base-400 max-h-48 overflow-y-hidden w-full">
+                {/* // chat list here   */}
+                <div className="chats-list flex flex-col gap-2 bg-base-400 max-h-64 w-full md:overflow-y-auto">
                   {showChats &&
                     allConversations.map((chat) => (
-                      <div className="chat py-2  flex justify-between items-center w-full border hover:bg-zinc-700 hover:rounded relative">
+                      <div
+                        key={chat.id}
+                        className="chat relative flex justify-between items-center w-full px-2 py-2 border border-zinc-700 rounded hover:bg-zinc-700"
+                      >
+                        {/* Chat title */}
                         <p
-                          key={chat.id}
-                          className={`px-1 overflow-hidden cursor-pointer `}
+                          className="overflow-hidden cursor-pointer truncate"
                           onClick={(e) => {
                             e.stopPropagation();
                             switchChat(chat.id);
-                          }}>
+                          }}
+                        >
                           {chat.title}
                         </p>
-                        <BsThreeDots className="text-gray-500 text-lg" />
 
-                        <ul className="w-40 h-40  p -2 border rounded absolute bg-base-300 px-1 z-20 top-5 right-3">
-                          <li className="p-1">Star</li>
-                          <li className="p-1 m-1">Add to Projects</li>
-                          <li className="p-1 m-1">Rename</li>
-                          <li className="text-red-400  m-1 p-1 rounded hover:bg-red-300 hover:text-amber-50">Delete</li>
-                        </ul>
+                        {/* Three dots */}
+                        <BsThreeDots
+                          className="text-gray-400 text-xl hover:text-white cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuId(openMenuId === chat.id ? null : chat.id);
+                          }}
+                        />
 
+                        {/* Dropdown */}
+                        {openMenuId === chat.id && (
+                          <ul className="absolute right-2 top-10 w-40 bg-base-300 border border-zinc-600 rounded shadow-lg z-20" onClick={(e) => e.stopPropagation()}>
+                            <li className="px-3 py-2 hover:bg-zinc-700 cursor-pointer">
+                              ⭐ Star
+                            </li>
+                            <li className="px-3 py-2 hover:bg-zinc-700 cursor-pointer">
+                              Archive
+                            </li>
+                            <li className="px-3 py-2 hover:bg-zinc-700 cursor-pointer">
+                              Add to Projects
+                            </li>
+                            <li className="px-3 py-2 hover:bg-zinc-700 cursor-pointer">
+                              Rename
+                            </li>
+                            <li className="px-3 py-2 text-red-400 hover:bg-red-500 hover:text-white cursor-pointer rounded-b" onClick={() => deleteChat(chat.id)}>
+                              Delete
+                            </li>
+                          </ul>
+                        )}
                       </div>
                     ))}
-                  {
-                    showChats ? allConversations.length === 0 && <p className="text-center text-red-400">No chat found</p> : null
-                  }
+
+                  {showChats && allConversations.length === 0 && (
+                    <p className="text-center text-red-400">No chat found</p>
+                  )}
                 </div>
+
               </div>
             </>
           )}

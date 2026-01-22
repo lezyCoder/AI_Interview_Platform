@@ -70,7 +70,10 @@ const ChatScreen = () => {
 
       {/* Chat area */}
       {
-        allConversations.length === 0 ? <h1 className="flex items-center justify-center text-4xl font-thin h-dvh ">What's up Ready to Start the Interview</h1> : <div className="flex-1 overflow-y-auto">
+        allConversations.length === 0 ? <div className=" flex flex-col gap-16 items-center justify-center h-dvh ">
+          <h1 className=" lg:text-4xl font-thin md:text-xl">What's up Ready to Start the Interview ?</h1>
+          <button className="p-2 outline-none border border-gray-700 rounded hover:bg-base-300 transition cursor-pointe " onClick={createNewChat}>Start Interview </button>
+        </div> : <div className="flex-1 overflow-y-auto">
           <div className="chat-screen bg-zinc-900 min-h-full w-full p-2">
             <div className="chat-container p-2">
               <div className="chat-bubbles flex flex-col gap-y-4">

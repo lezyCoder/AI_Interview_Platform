@@ -82,6 +82,23 @@ export const ChatProvider = ({ children }) => {
     setCurrentChatId(chatId);
   };
 
+  // Delete the chat 
+  const deleteChat = (chatID) => {
+
+    const filteredChat = allConversations.filter(chat => chatID !== chat.id)
+    // console.log("all conversations", allConversations)
+    // console.log("filtered", filteredChat)
+
+    setAllConversations(filteredChat)
+
+    // If deleting current chat, switch to first available or null
+    if (chatID === currentChatId) {
+      
+      setCurrentChatId(filteredChat.length > 0 ? filteredChat[0].id : null);
+    }
+
+  }
+
   const value = {
     allConversations,
     currentChatId,
@@ -91,6 +108,7 @@ export const ChatProvider = ({ children }) => {
     addMessage,
     updateChatTitle,
     switchChat,
+    deleteChat
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
