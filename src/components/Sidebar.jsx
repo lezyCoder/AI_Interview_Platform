@@ -9,7 +9,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { ChatContext } from '../Context/ChatContext.jsx'
 
 const Sidebar = () => {
-  const [isOpen, setOpen] = useState(false);
+  const [isSideBarOpen, setOpen] = useState(false);
   const [showChats, setShowChats] = useState(true);
 
   // Get from context
@@ -32,7 +32,7 @@ const Sidebar = () => {
         className={`flex text-center items-center gap-4 w-full font-thin text-xl py-2 hover:bg-gray-800 rounded`}
         onClick={(e) => handleOperations(e, label)}>
         <Icon className="text-2xl" />
-        {isOpen && <span>{label}</span>}
+        {isSideBarOpen && <span>{label}</span>}
       </button>
     );
   };
@@ -40,14 +40,14 @@ const Sidebar = () => {
   return (
     <aside>
       <div
-        className={`${isOpen ? "lg:w-64" : "lg:w-14"} md:w-36 flex flex-col items-center justify-between bg-base-500 h-full p-4 gap-2 border border-gray-700`}
-        onClick={() => setOpen(!isOpen)}>
+        className={`${isSideBarOpen ? "lg:w-64" : "lg:w-14"} md:w-36 flex flex-col items-center justify-between bg-base-500 h-full p-4 gap-2 border border-gray-700`}
+        onClick={() => setOpen(!isSideBarOpen)}>
 
         <div className="navigation flex justify-between items-center w-full">
           <h1>AI</h1>
           <button
-            className={`${isOpen ? "block" : "hidden"}`}
-            onClick={() => setOpen(!isOpen)}>
+            className={`${isSideBarOpen ? "block" : "hidden"}`}
+            onClick={() => setOpen(!isSideBarOpen)}>
             <BsLayoutSidebarReverse />
           </button>
         </div>
@@ -59,7 +59,7 @@ const Sidebar = () => {
             <MenuItem icon={VscNewFolder} label="Projects" />
           </div>
 
-          {isOpen && (
+          {isSideBarOpen && (
             <>
               <div
                 className="flex justify-between items-center text-gray-500 text-sm py-2"
@@ -79,14 +79,13 @@ const Sidebar = () => {
                   <RiArrowDropDownLine className="text-xl" />
                 </div>
 
-                <div className="chats-list flex flex-col gap-2 bg-base-400 max-h-48 overflow-y-auto w-full">
+                <div className="chats-list flex flex-col gap-2 bg-base-400 max-h-48 overflow-y-hidden w-full">
                   {showChats &&
                     allConversations.map((chat) => (
-                      <div className="chat py-2  flex justify-between items-center w-full border hover:bg-zinc-700 hover:rounded">
+                      <div className="chat py-2  flex justify-between items-center w-full border hover:bg-zinc-700 hover:rounded relative">
                         <p
                           key={chat.id}
-                          className={` px-1 overflow-hidden cursor-pointer ${chat.id === currentChatId ? 'bg-gray-700' : ''
-                            }`}
+                          className={`px-1 overflow-hidden cursor-pointer `}
                           onClick={(e) => {
                             e.stopPropagation();
                             switchChat(chat.id);
@@ -94,6 +93,14 @@ const Sidebar = () => {
                           {chat.title}
                         </p>
                         <BsThreeDots className="text-gray-500 text-lg" />
+
+                        <ul className="w-40 h-40  p -2 border rounded absolute bg-base-300 px-1 z-20 top-5 right-3">
+                          <li className="p-1">Star</li>
+                          <li className="p-1 m-1">Add to Projects</li>
+                          <li className="p-1 m-1">Rename</li>
+                          <li className="text-red-400  m-1 p-1 rounded hover:bg-red-300 hover:text-amber-50">Delete</li>
+                        </ul>
+
                       </div>
                     ))}
                   {
