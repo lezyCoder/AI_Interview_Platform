@@ -5,6 +5,7 @@ import { VscNewFolder } from "react-icons/vsc";
 import { BsLayoutSidebarReverse } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { BsThreeDots } from "react-icons/bs";
 import { ChatContext } from '../Context/ChatContext.jsx'
 
 const Sidebar = () => {
@@ -68,7 +69,7 @@ const Sidebar = () => {
               </div>
 
               <div
-                className="flex flex-col gap-4 text-gray-500 text-sm py-2"
+                className="flex flex-col gap-4 text-gray-500 text-sm py-2 w-full"
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowChats(!showChats);
@@ -78,20 +79,26 @@ const Sidebar = () => {
                   <RiArrowDropDownLine className="text-xl" />
                 </div>
 
-                <div className="chats-list flex flex-col gap-2 bg-base-400 max-h-48 overflow-y-auto">
+                <div className="chats-list flex flex-col gap-2 bg-base-400 max-h-48 overflow-y-auto w-full">
                   {showChats &&
                     allConversations.map((chat) => (
-                      <p
-                        key={chat.id}
-                        className={`border-b-2 border-gray-700 py-4 overflow-hidden cursor-pointer hover:bg-gray-800 ${chat.id === currentChatId ? 'bg-gray-700' : ''
-                          }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          switchChat(chat.id);
-                        }}>
-                        {chat.title}
-                      </p>
+                      <div className="chat py-2  flex justify-between items-center w-full border hover:bg-zinc-700 hover:rounded">
+                        <p
+                          key={chat.id}
+                          className={` px-1 overflow-hidden cursor-pointer ${chat.id === currentChatId ? 'bg-gray-700' : ''
+                            }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            switchChat(chat.id);
+                          }}>
+                          {chat.title}
+                        </p>
+                        <BsThreeDots className="text-gray-500 text-lg" />
+                      </div>
                     ))}
+                  {
+                    showChats ? allConversations.length === 0 && <p className="text-center text-red-400">No chat found</p> : null
+                  }
                 </div>
               </div>
             </>
