@@ -39,9 +39,14 @@ const ChatScreen = () => {
     setUserResponse("");
     setLoading(true);
 
+    const conversationSoFar = [
+      ...messages,
+      userQuestion
+    ];
+
     // AI Response
     try {
-      const AiResponseText = String(await aiResponse(userQuestion));
+      const AiResponseText = String(await aiResponse(conversationSoFar));
       const aiMessage = {
         text: AiResponseText,
         user: "ai",

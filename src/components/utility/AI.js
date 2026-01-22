@@ -3,10 +3,15 @@ const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 const ai = new GoogleGenAI({ apiKey });
 
-export const aiResponse = async (userResponse) => {
+export const aiResponse = async (messages) => {
+  // Build conversation context
+  const conversationText = messages
+    .map((msg) => `${msg.user === "human" ? "User" : "AI"}: ${msg.text}`)
+    .join("\n");
+
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: userResponse,
+    contents: conversationText,
     config: {
       systemInstruction: `Your name is Zen and You are a supportive Full stack Interviewer.
                 You only ask frontend backend and DSA  questions.
