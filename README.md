@@ -4,8 +4,7 @@ An AI-powered interview practice application that helps users prepare for techni
 
 ## 🌐 Live Demo
 
-[View Live App](#) **
-
+[View Live App](#) -[ aiinterviewer-81l0gqh4t-lezycoders-projects.vercel.app](https://aiinterviewer-amber.vercel.app/)
 ## ✨ Features
 
 ### Core Functionality
